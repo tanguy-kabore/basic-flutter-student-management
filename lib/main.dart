@@ -51,7 +51,8 @@ class FirstPageState extends State<FirstPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ListView.builder(
+      child: Column(children: [
+        Expanded(child: ListView.builder(
           itemCount: students.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
@@ -98,7 +99,9 @@ class FirstPageState extends State<FirstPage> {
                 icon: const Icon(Icons.delete),
               ),
             );
-          }),
+          }),),
+          Form(child: Column())
+      ],)
     );
   }
 }

@@ -9,12 +9,17 @@ class Detail extends StatelessWidget{
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          leading: IconButton(onPressed: (){
+            Navigator.pop(context);
+          }, icon: const Icon(Icons.arrow_back)),
           title: Text('${student.lastname} ${student.firstname}'),
           backgroundColor: Colors.yellow,
         ),
         body: Center(
           child: Column(children: [
-            Text('Nom ${student.lastname} ${student.firstname}'),
+            Text('Nom & Prénom : ${student.lastname} ${student.firstname}'),
+            Text('Note: ${student.mark ?? 0} /20'),
+            Text('Commentaire: ${student.comment ?? 'Pas de commentaire !'}')
           ],)
         ),
       )
