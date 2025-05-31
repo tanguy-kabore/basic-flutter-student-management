@@ -50,7 +50,8 @@ class FirstPageState extends State<FirstPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Padding(padding: EdgeInsets.all(10),
+    child: Center(
       child: Column(children: [
         Expanded(child: ListView.builder(
           itemCount: students.length,
@@ -100,8 +101,16 @@ class FirstPageState extends State<FirstPage> {
               ),
             );
           }),),
-          Form(child: Column())
+          Form(child: Column(children: [
+            TextField(decoration: InputDecoration(labelText: 'Nom'),),
+            TextField(decoration: InputDecoration(labelText: 'Prénom'),),
+            TextField(decoration: InputDecoration(labelText: 'Commentaire'),),
+            Row(children: [
+              Expanded(child: TextField(decoration: InputDecoration(labelText: 'Note'),),),
+              ElevatedButton(onPressed: (){}, child: const Text('Save'))
+            ],) 
+          ],))
       ],)
-    );
+    ),);
   }
 }
