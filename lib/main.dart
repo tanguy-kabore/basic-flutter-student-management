@@ -52,30 +52,41 @@ class FirstPageState extends State<FirstPage> {
     students.removeAt(index);
     setState(() {});
   }
-  void createStudent(){
-    if(_formKey.currentState!.validate() 
-    && _lastNameController.value.text !="" 
-    && _firstNameController.value.text !=""
-    && _comentController.value.text !=""
-    && _markController.value.text !=""){
+
+  void createStudent() {
+    if (_formKey.currentState!.validate() &&
+        _lastNameController.value.text != "" &&
+        _firstNameController.value.text != "") {
       students.add(Student(
-        lastname: _lastNameController.value.text, 
-        firstname: _firstNameController.value.text,
-        mark: int.parse(_markController.value.text),
-        comment: _comentController.value.text));
-        ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Ajouté!",
-        style: TextStyle(color: Colors.green),)));
-    }else{
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Erreur!",
-        style: TextStyle(color: Colors.red),)));
+          lastname: _lastNameController.value.text,
+          firstname: _firstNameController.value.text,
+          mark: _markController.value.text == ""
+              ? 0
+              : int.parse(_markController.value.text),
+          comment: _comentController.value.text));
+      _lastNameController.clear();
+      _firstNameController.clear();
+      _comentController.clear();
+      _markController.clear();
+      setState(() {});
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+        "Ajouté!",
+        style: TextStyle(color: Colors.green),
+      )));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+        "Erreur!",
+        style: TextStyle(color: Colors.red),
+      )));
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Center(
           child: Column(
         children: [
@@ -147,32 +158,52 @@ class FirstPageState extends State<FirstPage> {
                 }),
           ),
           Form(
-            key: _formKey,
+              key: _formKey,
               child: Column(
-            children: [
-              TextField(
-                decoration: InputDecoration(labelText: 'Nom'),
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Prénom'),
-              ),
-              TextField(
-                keyboardType: TextInputType.multiline,
-                decoration: InputDecoration(labelText: 'Commentaire'),
-              ),
-              Row(
                 children: [
-                  Expanded(
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(labelText: 'Note'),
-                    ),
+                  TextField(
+                    controller: _lastNameController,
+                    decoration: const InputDecoration(
+                        labelText: 'Nom',
+                        helperText: 'Obligatoire',
+                        border: OutlineInputBorder()),
                   ),
-                  ElevatedButton(onPressed: () {}, child: const Text('Save'))
+                  TextField(
+                    controller: _firstNameController,
+                    decoration: const InputDecoration(
+                        labelText: 'Prénom',
+                        helperText: 'Obligatoire',
+                        border: OutlineInputBorder()),
+                  ),
+                  TextField(
+                    controller: _comentController,
+                    keyboardType: TextInputType.multiline,
+                    decoration: const InputDecoration(
+                        labelText: 'Commentaire',
+                        helperText: 'Facultatif',
+                        border: OutlineInputBorder()),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _markController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              labelText: 'Note',
+                              helperText: 'Facultatif',
+                              border: OutlineInputBorder()),
+                        ),
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            createStudent();
+                          },
+                          child: const Text('Save'))
+                    ],
+                  )
                 ],
-              )
-            ],
-          ))
+              ))
         ],
       )),
     );
