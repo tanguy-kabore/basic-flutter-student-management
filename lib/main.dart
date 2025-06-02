@@ -63,8 +63,13 @@ class FirstPageState extends State<FirstPage> {
         firstname: _firstNameController.value.text,
         mark: int.parse(_markController.value.text),
         comment: _comentController.value.text));
+        ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Ajouté!",
+        style: TextStyle(color: Colors.green),)));
     }else{
-      
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Erreur!",
+        style: TextStyle(color: Colors.red),)));
     }
   }
   @override
