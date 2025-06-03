@@ -1,211 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:ist_app/detail.dart';
-import 'package:ist_app/student.dart';
 
-void main() {
-  return runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'My first App',
-        home: Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              'First Page',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            backgroundColor: Colors.yellow,
-          ),
-          body: const FirstPage(),
-        ));
+        title: 'My App',
+        home: CounterPage());
   }
 }
 
-class FirstPage extends StatefulWidget {
-  const FirstPage({super.key});
+class CounterPage extends StatefulWidget {
+  const CounterPage({super.key});
   @override
-  FirstPageState createState() {
-    return FirstPageState();
-  }
+  CounterPageState createState() => CounterPageState();
 }
 
-class FirstPageState extends State<FirstPage> {
-  final _formKey = GlobalKey<FormState>();
-  final _lastNameController = TextEditingController();
-  final _firstNameController = TextEditingController();
-  final _comentController = TextEditingController();
-  final _markController = TextEditingController();
-  List<Student> students = [
-    Student(lastname: 'KABORE', firstname: 'Tanguy', mark: 20),
-    Student(lastname: 'OUEDRAOGO', firstname: 'Ibrahim', mark: 10),
-    Student(lastname: 'SAWADOGO', firstname: 'Noaga'),
-  ];
-  void deleteStudent(List<Student> students, int index) {
-    students.removeAt(index);
+class CounterPageState extends State<CounterPage> {
+  int _count = 0;
+  void incrementCounter() {
+    _count++;
     setState(() {});
-  }
-
-  void createStudent() {
-    if (_formKey.currentState!.validate() &&
-        _lastNameController.value.text != "" &&
-        _firstNameController.value.text != "") {
-      students.add(Student(
-          lastname: _lastNameController.value.text,
-          firstname: _firstNameController.value.text,
-          mark: _markController.value.text == ""
-              ? 0
-              : int.parse(_markController.value.text),
-          comment: _comentController.value.text));
-      _lastNameController.clear();
-      _firstNameController.clear();
-      _comentController.clear();
-      _markController.clear();
-      setState(() {});
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-        "Ajouté!",
-        style: TextStyle(color: Colors.green),
-      )));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-        "Erreur!",
-        style: TextStyle(color: Colors.red),
-      )));
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+          )
+        ],
+        title: const Text('IST'),
+        backgroundColor: Colors.blueAccent,
+      ),
+      body: Center(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: ListView.builder(
-                itemCount: students.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Detail(student: students[index]);
-                      }));
-                    },
-                    leading: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black),
-                      ),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        child: Image.asset(
-                          'assets/images/armoirie.png',
-                          width: 30,
-                          height: 30,
-                        ),
-                      ),
-                    ),
-                    title: Text(
-                        '${students[index].lastname} ${students[index].firstname}'),
-                    subtitle: Text('${students[index].mark ?? 0}'),
-                    trailing: IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                content: const Text(
-                                    'Voulez-vous vraiment supprimer ?'),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: const Text(
-                                        'Non',
-                                        style: TextStyle(color: Colors.red),
-                                      )),
-                                  TextButton(
-                                      onPressed: () {
-                                        deleteStudent(students, index);
-                                        Navigator.of(context).pop();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content:
-                                                    Text('Bien supprimé!')));
-                                      },
-                                      child: const Text(
-                                        'Oui',
-                                        style: TextStyle(color: Colors.green),
-                                      )),
-                                ],
-                              );
-                            });
-                      },
-                      icon: const Icon(Icons.delete),
-                    ),
-                  );
-                }),
-          ),
-          Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextField(
-                    controller: _lastNameController,
-                    decoration: const InputDecoration(
-                        labelText: 'Nom',
-                        helperText: 'Obligatoire',
-                        border: OutlineInputBorder()),
-                  ),
-                  TextField(
-                    controller: _firstNameController,
-                    decoration: const InputDecoration(
-                        labelText: 'Prénom',
-                        helperText: 'Obligatoire',
-                        border: OutlineInputBorder()),
-                  ),
-                  TextField(
-                    controller: _comentController,
-                    keyboardType: TextInputType.multiline,
-                    decoration: const InputDecoration(
-                        labelText: 'Commentaire',
-                        helperText: 'Facultatif',
-                        border: OutlineInputBorder()),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _markController,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                              labelText: 'Note',
-                              helperText: 'Facultatif',
-                              border: OutlineInputBorder()),
-                        ),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            createStudent();
-                          },
-                          child: const Text('Save'))
-                    ],
-                  )
-                ],
-              ))
+          Text("Vous avez cliqué $_count fois"),
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  _count = 0;
+                });
+              },
+              child: const Text("Reset"))
         ],
       )),
+      floatingActionButton: IconButton(
+        onPressed: () {
+          incrementCounter();
+        },
+        icon: const Icon(Icons.add),
+        color: Colors.blueAccent,
+      ),
     );
   }
 }
