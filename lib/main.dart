@@ -33,7 +33,13 @@ class CounterPageState extends State<CounterPage> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(5),
-            child: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+            child: IconButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ProfilePage();
+                  }));
+                },
+                icon: const Icon(Icons.menu)),
           )
         ],
         title: const Text('IST'),
@@ -50,7 +56,10 @@ class CounterPageState extends State<CounterPage> {
                   _count = 0;
                 });
               },
-              child: const Text("Reset"))
+              child: const Text(
+                "Reset",
+                style: TextStyle(fontSize: 30),
+              ))
         ],
       )),
       floatingActionButton: IconButton(
@@ -60,6 +69,57 @@ class CounterPageState extends State<CounterPage> {
         icon: const Icon(Icons.add),
         color: Colors.blueAccent,
       ),
+    );
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back)),
+            title: const Text('Profile'),
+            backgroundColor: Colors.blueAccent,
+          ),
+          body: Padding(
+            padding: EdgeInsets.all(40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Image.asset("assets/images/armoirie.png"),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "Nom: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text("KABORE")
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "Prénom: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text("Tanguy")
+                  ],
+                )
+              ],
+            ),
+          )),
     );
   }
 }
